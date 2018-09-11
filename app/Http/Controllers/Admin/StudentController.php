@@ -213,7 +213,8 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {       
-       $classes = array_pluck(ClassType::get(['id','alias'])->toArray(),'alias', 'id');    
+       $admin_id = Auth::guard('admin')->user()->id;
+       $classes = array_pluck(ClassType::where('admin_id',$admin_id)->get(['id','alias'])->toArray(),'alias', 'id');     
        $sessions = array_pluck(SessionDate::get(['id','date'])->toArray(),'date', 'id');
        $genders = array_pluck(Gender::get(['id','genders'])->toArray(),'genders', 'id');
        $religions = array_pluck(Religion::get(['id','name'])->toArray(),'name', 'id');
@@ -407,8 +408,8 @@ class StudentController extends Controller
         return redirect()->back()->with(['class'=>'error','message'=>'Whoops ! Look like somthing went wrong ..']);
     }
     public function importview() {
-         
-        $classes = array_pluck(ClassType::get(['id','alias'])->toArray(),'alias', 'id');    
+        $admin_id = Auth::guard('admin')->user()->id;
+        $classes = array_pluck(ClassType::where('admin_id',$admin_id)->get(['id','alias'])->toArray(),'alias', 'id');    
         $sessions = array_pluck(SessionDate::get(['id','date'])->toArray(),'date', 'id');
         $genders = array_pluck(Gender::get(['id','genders'])->toArray(),'genders', 'id');
         $religions = array_pluck(Religion::get(['id','name'])->toArray(),'name', 'id');
